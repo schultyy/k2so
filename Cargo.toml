@@ -5,3 +5,4 @@ authors = ["Jan Schulte <hello@unexpected-co.de>"]
 license = "MIT"
 description = "Deployment droid"
 [dependencies]
+clap = "~2.19.0"
