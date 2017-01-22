@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+    println!("K2-SO -- Deployment Droid 🤖✨");
 }
