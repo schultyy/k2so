@@ -1,8 +1,18 @@
 extern crate clap;
+extern crate toml;
+extern crate rustc_serialize;
+mod config;
 use clap::{Arg, App, SubCommand};
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 const APP_NAME: &'static str = "K2-SO -- Deployment Droid 🤖✨";
+
+fn add_to_file(role: String, address: String) {
+    let config = config::Config::new(role, address);
+    let result = toml::encode_str(&config);
+
+    println!("{:?}", result);
+}
 
 fn main() {
     let matches = App::new(APP_NAME)
@@ -20,7 +30,8 @@ fn main() {
                   .help("Define a role"))
             ).get_matches();
     if let Some(ref matches) = matches.subcommand_matches("add") {
-      println!("Role: {}", matches.value_of("role").unwrap());
-      println!("Address: {}", matches.value_of("address").unwrap());
+      let role = matches.value_of("role").unwrap();
+      let address = matches.value_of("address").unwrap();
+      add_to_file(role.to_string(), address.to_string());
     }
 }
