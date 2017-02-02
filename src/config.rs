@@ -20,15 +20,6 @@ impl Config {
     Default::default()
   }
 
-  pub fn new_with_role(role: String, address: String) -> Config {
-    Config {
-      roles: vec!(Role{
-        name: role,
-        address: address
-      })
-    }
-  }
-
   pub fn add_role(&mut self, role: String, address: String) {
     self.roles.push(Role{
       name: role,
