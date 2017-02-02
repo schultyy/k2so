@@ -78,8 +78,13 @@ fn main() {
                   .help("Define an address"))
               .arg(Arg::with_name("role")
                   .index(2)
-                  .help("Define a role"))
-            ).get_matches();
+                  .help("Define a role")))
+            .subcommand(SubCommand::with_name("deploy")
+              .arg(Arg::with_name("role")
+                    .index(1)
+                    .required(true)
+                    .help("The machine which should be deployed")))
+            .get_matches();
 
     if let Some(ref matches) = matches.subcommand_matches("add") {
       let role = matches.value_of("role").unwrap();
