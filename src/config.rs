@@ -26,4 +26,8 @@ impl Config {
       address: address
     });
   }
+
+  pub fn is_role_unique(&self, role_name: &str) -> bool {
+    !self.roles.iter().any(|ref role| role.name == role_name)
+  }
 }
