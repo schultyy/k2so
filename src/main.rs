@@ -60,6 +60,19 @@ fn add_to_file(role: String, address: String) {
     }
 }
 
+fn deploy(role_name: String) {
+    let config = read_server_file();
+    match config.address_for_role_name(&role_name) {
+        Some(address) => {
+            println!("Deploying {} - {}", role_name, address);
+        },
+        None => {
+            println!("No address found for role {}", role_name);
+            process::exit(1)
+        }
+    }
+}
+
 fn main() {
     let matches = App::new(APP_NAME)
             .version(VERSION)
@@ -100,6 +113,6 @@ fn main() {
     }
     else if let Some(ref matches) = matches.subcommand_matches("deploy") {
         let role = matches.value_of("role").unwrap();
-        println!("Deploying to {}", role);
+        deploy(role.to_string());
     }
 }

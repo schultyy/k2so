@@ -30,4 +30,11 @@ impl Config {
   pub fn is_role_unique(&self, role_name: &str) -> bool {
     !self.roles.iter().any(|ref role| role.name == role_name)
   }
+
+  pub fn address_for_role_name(&self, role_name: &str) -> Option<String> {
+    match self.roles.iter().find(|&r| r.name == role_name) {
+      Some(role) => Some(role.address.clone()),
+      None => None
+    }
+  }
 }
