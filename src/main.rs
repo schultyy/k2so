@@ -58,6 +58,11 @@ fn main() {
             .version(VERSION)
             .author("Jan Schulte <jan@unexpected-co.de>")
             .about("Deploys your tool -- The captain said I have to")
+            .arg(Arg::with_name("list")
+                               .short("l")
+                               .long("list")
+                               .help("Lists all values from the server file")
+                               .takes_value(false))
             .subcommand(SubCommand::with_name("add")
               .arg(Arg::with_name("address")
                   .index(1)
@@ -68,9 +73,17 @@ fn main() {
                   .index(2)
                   .help("Define a role"))
             ).get_matches();
+
     if let Some(ref matches) = matches.subcommand_matches("add") {
       let role = matches.value_of("role").unwrap();
       let address = matches.value_of("address").unwrap();
       add_to_file(role.to_string(), address.to_string());
+    }
+
+    else if matches.occurrences_of("list") > 0 {
+        let config = read_server_file();
+        for rule in config.roles {
+            println!("Role: {} -- {}", rule.name, rule.address);
+        }
     }
 }
