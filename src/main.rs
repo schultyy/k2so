@@ -45,7 +45,8 @@ fn read_server_file() -> config::Config {
 }
 
 fn add_to_file(role: String, address: String) {
-    let config = config::Config::new_with_role(role, address);
+    let mut config = read_server_file();
+    config.add_role(role, address);
     let toml_string = toml::encode_str(&config);
 
     let mut file = std::fs::File::create("servers.toml").unwrap();

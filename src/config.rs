@@ -28,4 +28,11 @@ impl Config {
       })
     }
   }
+
+  pub fn add_role(&mut self, role: String, address: String) {
+    self.roles.push(Role{
+      name: role,
+      address: address
+    });
+  }
 }
