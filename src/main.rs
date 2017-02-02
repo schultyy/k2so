@@ -82,8 +82,9 @@ fn main() {
 
     else if matches.occurrences_of("list") > 0 {
         let config = read_server_file();
+        println!("Reading servers.toml...");
         for rule in config.roles {
-            println!("Role: {} -- {}", rule.name, rule.address);
+            println!("🖥 {} － {}", rule.name, rule.address);
         }
     }
 }
