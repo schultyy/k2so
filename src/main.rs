@@ -91,12 +91,15 @@ fn main() {
       let address = matches.value_of("address").unwrap();
       add_to_file(role.to_string(), address.to_string());
     }
-
     else if matches.occurrences_of("list") > 0 {
         let config = read_server_file();
         println!("Reading servers.toml...");
         for rule in config.roles {
             println!("🖥 {} － {}", rule.name, rule.address);
         }
+    }
+    else if let Some(ref matches) = matches.subcommand_matches("deploy") {
+        let role = matches.value_of("role").unwrap();
+        println!("Deploying to {}", role);
     }
 }
