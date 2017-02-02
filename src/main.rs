@@ -2,10 +2,12 @@ extern crate clap;
 extern crate toml;
 extern crate rustc_serialize;
 mod config;
-use clap::{Arg, App, SubCommand};
 use std::io::prelude::*;
 use std::fs::File;
+use std::process;
 use toml::{Parser, Value};
+use clap::{Arg, App, SubCommand};
+
 
 const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 const APP_NAME: &'static str = "K2-SO -- Deployment Droid 🤖✨";
@@ -46,11 +48,16 @@ fn read_server_file() -> config::Config {
 
 fn add_to_file(role: String, address: String) {
     let mut config = read_server_file();
-    config.add_role(role, address);
-    let toml_string = toml::encode_str(&config);
+    if config.is_role_unique(&role) {
+        config.add_role(role, address);
+        let toml_string = toml::encode_str(&config);
 
-    let mut file = std::fs::File::create("servers.toml").unwrap();
-    file.write_all(toml_string.as_bytes()).expect("Could not write to file!");
+        let mut file = std::fs::File::create("servers.toml").unwrap();
+        file.write_all(toml_string.as_bytes()).expect("Could not write to file!");
+    } else {
+        println!("Role {} is already configured", role);
+        process::exit(1)
+    }
 }
 
 fn main() {
