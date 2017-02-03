@@ -7,17 +7,31 @@ When using [knife solo](https://matschaffer.github.io/knife-solo/) it requires s
 
 ## Usage
 
+This requires the following tools to be installed:
+
+- [ChefDK](https://downloads.chef.io/chefdk)
+- [knife solo](https://matschaffer.github.io/knife-solo/)
+
 First, a new mapping between role and IP address has to be defined:
 
 ```bash
-$ k2so -add app 192.168.33.10
+$ k2so add 192.168.33.10 app
 ```
 
 This maps the address `192.168.33.10` to the `app` role. If that role already existed before, it gets overwritten automatically.
 
+Then execute these commands as well:
+
+```bash
+$ k2so add_user root
+$ k2so add_key keys/id_rsa
+```
+
+These two configure the user which shall be used to connect and the ssh key. These are global for all configured roles.
+
 Then if that's done, the actual deploy can be performed:
 
-```
+```bash
 $ k2so deploy app
 ```
 
