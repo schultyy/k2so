@@ -133,10 +133,21 @@ fn main() {
     else if matches.occurrences_of("list") > 0 {
         let config = read_server_file();
         println!("Reading servers.toml...");
-        println!("Username: {}", config.username);
-        println!("SSH Key path: {}", config.ssh_key_path);
-        for rule in config.roles {
-            println!("🖥 {} － {}", rule.name, rule.address);
+        match config.is_valid() {
+            Ok(()) => {
+                println!("Username: {}", config.username);
+                println!("SSH Key path: {}", config.ssh_key_path);
+                for rule in config.roles {
+                    println!("🖥 {} － {}", rule.name, rule.address);
+                }
+            },
+            Err(errors) => {
+                println!("Configuration is not valid!");
+                for error in errors {
+                    println!("{}", error);
+                }
+                process::exit(1)
+            }
         }
     }
     else if let Some(ref matches) = matches.subcommand_matches("add_user") {

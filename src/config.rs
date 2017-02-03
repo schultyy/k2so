@@ -47,4 +47,24 @@ impl Config {
   pub fn add_ssh_key(&mut self, ssh_key_path: String) {
     self.ssh_key_path = ssh_key_path;
   }
+
+  pub fn is_valid(&self) -> Result<(), Vec<String>> {
+    let mut is_valid = true;
+    let mut error_messages = vec!();
+
+    if self.username.len() == 0 {
+      is_valid = false;
+      error_messages.push("Username must be set".into());
+    }
+    if self.ssh_key_path.len() == 0 {
+      is_valid = false;
+      error_messages.push("SSH Key path must be set".into());
+    }
+
+    if is_valid {
+      return Ok(())
+    } else {
+      return Err(error_messages)
+    }
+  }
 }
