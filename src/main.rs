@@ -46,14 +46,18 @@ fn read_server_file() -> config::Config {
     }
 }
 
+fn save_configuration(config: config::Config) {
+    let toml_string = toml::encode_str(&config);
+
+    let mut file = std::fs::File::create("servers.toml").unwrap();
+    file.write_all(toml_string.as_bytes()).expect("Could not write to file!");
+}
+
 fn add_to_file(role: String, address: String) {
     let mut config = read_server_file();
     if config.is_role_unique(&role) {
         config.add_role(role, address);
-        let toml_string = toml::encode_str(&config);
-
-        let mut file = std::fs::File::create("servers.toml").unwrap();
-        file.write_all(toml_string.as_bytes()).expect("Could not write to file!");
+        save_configuration(config);
     } else {
         println!("Role {} is already configured", role);
         process::exit(1)
@@ -71,6 +75,12 @@ fn deploy(role_name: String) {
             process::exit(1)
         }
     }
+}
+
+fn add_username(username: String) {
+    let mut config = read_server_file();
+    config.add_username(username);
+    save_configuration(config);
 }
 
 fn main() {
@@ -119,6 +129,7 @@ fn main() {
     else if let Some(ref matches) = matches.subcommand_matches("add_user") {
         let username = matches.value_of("username").unwrap();
         println!("Configuring {}", username);
+        add_username(username.to_string());
     }
     else if let Some(ref matches) = matches.subcommand_matches("deploy") {
         let role = matches.value_of("role").unwrap();

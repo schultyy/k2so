@@ -3,7 +3,8 @@
 #[derive(RustcEncodable)]
 #[derive(RustcDecodable)]
 pub struct Config {
-  pub roles: Vec<Role>
+  pub roles: Vec<Role>,
+  pub username: String
 }
 
 #[derive(Default)]
@@ -36,5 +37,9 @@ impl Config {
       Some(role) => Some(role.address.clone()),
       None => None
     }
+  }
+
+  pub fn add_username(&mut self, username: String) {
+    self.username = username;
   }
 }
