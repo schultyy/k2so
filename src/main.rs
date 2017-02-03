@@ -83,6 +83,12 @@ fn add_username(username: String) {
     save_configuration(config);
 }
 
+fn add_ssh_key(path: String) {
+    let mut config = read_server_file();
+    config.add_ssh_key(path);
+    save_configuration(config);
+}
+
 fn main() {
     let matches = App::new(APP_NAME)
             .version(VERSION)
@@ -112,6 +118,11 @@ fn main() {
                     .index(1)
                     .required(true)
                     .help("Configures the machine's username")))
+            .subcommand(SubCommand::with_name("add_key")
+              .arg(Arg::with_name("key")
+                    .index(1)
+                    .required(true)
+                    .help("Configures path to ssh key")))
             .get_matches();
 
     if let Some(ref matches) = matches.subcommand_matches("add") {
@@ -130,6 +141,11 @@ fn main() {
         let username = matches.value_of("username").unwrap();
         println!("Configuring {}", username);
         add_username(username.to_string());
+    }
+    else if let Some(ref matches) = matches.subcommand_matches("add_key") {
+        let key = matches.value_of("key").unwrap();
+        println!("Configuring SSH Key {}", key);
+        add_ssh_key(key.to_string());
     }
     else if let Some(ref matches) = matches.subcommand_matches("deploy") {
         let role = matches.value_of("role").unwrap();

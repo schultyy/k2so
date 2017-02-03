@@ -4,7 +4,8 @@
 #[derive(RustcDecodable)]
 pub struct Config {
   pub roles: Vec<Role>,
-  pub username: String
+  pub username: String,
+  pub ssh_key_path: String
 }
 
 #[derive(Default)]
@@ -41,5 +42,9 @@ impl Config {
 
   pub fn add_username(&mut self, username: String) {
     self.username = username;
+  }
+
+  pub fn add_ssh_key(&mut self, ssh_key_path: String) {
+    self.ssh_key_path = ssh_key_path;
   }
 }
