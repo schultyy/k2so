@@ -97,6 +97,11 @@ fn main() {
                     .index(1)
                     .required(true)
                     .help("The machine which should be deployed")))
+            .subcommand(SubCommand::with_name("add_user")
+              .arg(Arg::with_name("username")
+                    .index(1)
+                    .required(true)
+                    .help("Configures the machine's username")))
             .get_matches();
 
     if let Some(ref matches) = matches.subcommand_matches("add") {
@@ -110,6 +115,10 @@ fn main() {
         for rule in config.roles {
             println!("🖥 {} － {}", rule.name, rule.address);
         }
+    }
+    else if let Some(ref matches) = matches.subcommand_matches("add_user") {
+        let username = matches.value_of("username").unwrap();
+        println!("Configuring {}", username);
     }
     else if let Some(ref matches) = matches.subcommand_matches("deploy") {
         let role = matches.value_of("role").unwrap();
