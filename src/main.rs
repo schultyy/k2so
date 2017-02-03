@@ -5,6 +5,7 @@ mod config;
 use std::io::prelude::*;
 use std::fs::File;
 use std::process;
+use std::process::Command;
 use toml::{Parser, Value};
 use clap::{Arg, App, SubCommand};
 
@@ -78,6 +79,25 @@ fn deploy(role_name: String) {
     match config.address_for_role_name(&role_name) {
         Some(address) => {
             println!("Deploying {} - {}", role_name, address);
+            let output = Command::new("knife")
+                     .arg("solo")
+                     .arg("bootstrap")
+                     .arg(format!("{}@{}", config.username, address))
+                     .arg("-i")
+                     .arg(config.ssh_key_path)
+                     .arg("--no-host-key-verify")
+                     .arg("--node-name")
+                     .arg(role_name)
+                     .output()
+                     .expect("failed to execute process");
+            let stdout = String::from_utf8(output.stdout).unwrap();
+            let stderr = String::from_utf8(output.stderr).unwrap();
+            if output.status.success() {
+                println!("{}", stdout);
+            } else {
+                println!("{}", stderr);
+                process::exit(1)
+            }
         },
         None => {
             println!("No address found for role {}", role_name);
