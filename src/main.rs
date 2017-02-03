@@ -66,6 +66,15 @@ fn add_to_file(role: String, address: String) {
 
 fn deploy(role_name: String) {
     let config = read_server_file();
+
+    if let Err(errors) = config.is_valid() {
+        println!("Configuration is not valid");
+        for error in errors {
+            println!("{}", error);
+        }
+        process::exit(1)
+    }
+
     match config.address_for_role_name(&role_name) {
         Some(address) => {
             println!("Deploying {} - {}", role_name, address);
