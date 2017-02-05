@@ -1,4 +1,4 @@
-# k2so
+# k2so ![](https://img.shields.io/crates/v/k2so.svg)
 Deploys your software -- The captain said I have to
 
 The purpose of this crate is to assist with deployments and infrastructure changes performed via Chef.
