@@ -5,6 +5,12 @@ The purpose of this crate is to assist with deployments and infrastructure chang
 
 When using [knife solo](https://matschaffer.github.io/knife-solo/) it requires some arguments passed in such as IP address and the role name. To ensure that the right machine gets provisioned with the right cookbook this tool lets the user define roles upfront which then can be used afterwards to perform deployments and/or infrastructure changes in an easy way.
 
+## Installation
+
+To install k2so, you first need to install Rust from https://www.rust-lang.org/en-US/install.html.
+
+Then you can run `cargo install k2so`.
+
 ## Usage
 
 This requires the following tools to be installed:
